@@ -4,17 +4,17 @@ $(function () {
             $('#hint').text("不能为空").css({"background-color": "green"});
         } else {
             $.ajax({
-                url: 'http://localhost:8080/getUser',
+                url: 'http://localhost:8080/getTicketInfo',
                 type: 'POST',
                 data: {startAddress:"上海", endAddress:"北京", date:"20180620"},
                 dataType: 'json',
-                timeout: 5000,
                 success:function(data){
                     alert("success");
                     var json = eval(data); //数组
                     var dbody =$("#dbody");
                     $.each(json, function (index, item) {
                         //循环获取数据
+                        document.write(json[index].id);
                         var id = json[index].id;//
                         var date = json[index].date;//
                         var startAddress = json[index].startAddress;//
