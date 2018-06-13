@@ -17,8 +17,15 @@ public class PayServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String money=request.getParameter("money");
         User user= (User) request.getSession().getAttribute("user");
-        ServiceConsumer serviceConsumer=new ServiceConsumer(Constant.ZK_CONNECTION_STRING,Constant.ZK_SESSION_TIMEOUT,Constant.BANK1_PATH);
-        Bank1Service bank1Service=serviceConsumer.lookup();
+        ServiceConsumer bank1ServiceConsumer;
+        Object obj;
+        if ((obj=request.getSession().getServletContext().getAttribute("bank1ServiceConsumer"))!=null){
+            bank1ServiceConsumer= (ServiceConsumer) obj;
+        }else {
+            bank1ServiceConsumer=new ServiceConsumer(Constant.ZK_CONNECTION_STRING,Constant.ZK_SESSION_TIMEOUT,Constant.BANK1_PATH);
+            request.getSession().getServletContext().setAttribute("bank1ServiceConsumer",bank1ServiceConsumer);
+        }
+        Bank1Service bank1Service=bank1ServiceConsumer.lookup();
         if (bank1Service.transfer(user,"qunar",Integer.parseInt(money))){
             request.getRequestDispatcher("/main.html").forward(request,response);
         }else {

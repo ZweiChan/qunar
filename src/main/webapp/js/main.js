@@ -4,7 +4,7 @@ $(function () {
             $('#hint').text("不能为空").css({"background-color": "green"});
         } else {
             $.ajax({
-                url: 'http://localhost:8080/getTicketInfo',
+                url: 'http://localhost:8080/getUser',
                 type: 'POST',
                 data: {startAddress:"上海", endAddress:"北京", date:"20180620"},
                 dataType: 'json',

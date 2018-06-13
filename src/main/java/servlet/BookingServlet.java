@@ -29,11 +29,18 @@ public class BookingServlet extends HttpServlet {
             }
         }
         User user= (User) request.getSession().getAttribute("user");
-        ServiceConsumer serviceConsumer=new ServiceConsumer(Constant.ZK_CONNECTION_STRING,Constant.ZK_SESSION_TIMEOUT,Constant.AGENT1_PATH);
-        Agent1Service agent1Service=serviceConsumer.lookup();
+        ServiceConsumer agent1ServiceConsumer;
+        Object obj;
+        if ((obj=request.getSession().getServletContext().getAttribute("agent1ServiceConsumer"))!=null){
+            agent1ServiceConsumer= (ServiceConsumer) obj;
+        }else {
+            agent1ServiceConsumer=new ServiceConsumer(Constant.ZK_CONNECTION_STRING,Constant.ZK_SESSION_TIMEOUT,Constant.AGENT1_PATH);
+            request.getSession().getServletContext().setAttribute("agent1ServiceConsumer",agent1ServiceConsumer);
+        }
+        Agent1Service agent1Service=agent1ServiceConsumer.lookup();
         Order order=agent1Service.booking(user,ticket);
         if (order!=null){
-            request.setAttribute("order",order);
+            request.getSession().setAttribute("order",order);
             request.getRequestDispatcher("/order.html").forward(request,response);
         }else {
             request.getRequestDispatcher("/main.html").forward(request,response);

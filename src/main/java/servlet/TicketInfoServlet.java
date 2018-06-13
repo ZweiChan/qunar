@@ -32,7 +32,7 @@ public class TicketInfoServlet extends HttpServlet {
         }
         Agent1Service agent1Service=agent1ServiceConsumer.lookup();
         ticketList=agent1Service.queryTickets(startAddress,endAddress,date);
-        //request.getSession().setAttribute("tickets",tickets);
+        request.getSession().setAttribute("tickets",ticketList);
         Gson gson=new Gson();
         String json=gson.toJson(ticketList);
         response.getWriter().write(json);
