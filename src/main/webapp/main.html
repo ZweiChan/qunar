@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/html5shiv.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+<div>
+<div class="cell-lg-8 cell-lg-preffix-2">
+    <!-- RD Mailform-->
+    <form class="rd-mailform text-left form-search" novalidate="novalidate">
+        <p class="small text-xs-right">Searching for a Flight</p>
+        <div class="range offset-top-0">
+            <div class="cell-sm-6 offset-top-38">
+                <div class="form-group">
+                    <label for="from" class="form-label rd-input-label">From</label>
+                    <input id="from" type="text" name="city" data-constraints="@Required" placeholder="Where are you departing from?" class="form-control form-control-has-validation form-control-last-child"><span class="form-validation"></span>
+                </div>
+                <br/><br/>
+                <div class="form-group">
+                    <label for="to" class="form-label rd-input-label">To</label>
+                    <input id="to" type="text" name="city2" data-constraints="@Required" placeholder="Where would you like to go?" class="form-control form-control-has-validation form-control-last-child"><span class="form-validation"></span>
+                </div>
+                <br/><br/>
+                <div class="form-group date">
+                    <label for="datetimepicker1" class="form-label rd-input-label">出发日期</label>
+                    <input id="datetimepicker1" type="text" data-time-picker="date" placeholder="XX年/XX月/XX日" class="form-control" data-dtp="dtp_VgH2L"><span class="material-icons-event icon icon-md icon-primary"></span>
+                </div>
+
+                <br/><br/>
+                <div class="cell-sm-12 offset-top-30 text-center" style="max-width: 366px;">
+                    <button id="sumbit" data-text="search" class="btn btn-orange btn-fullwidth btn-winona btn-sm" style="max-width: 366px;"><span>search</span></button>
+                    <a href="#" class="btn-link"> Advanced Search</a>
+                </div>
+                <div id="hint"></div>
+            </div>
+        </div>
+    </form>
+</div>
+    <div class="list" id="dbody">
+        <dl>
+            <dt><span></span></dt>
+            <dd class="dd0"></a></dd>
+            <dd class="dd1"></dd>
+            <dd class="dd2"><a href="#" style="display:none;">点击订票</a></dd>
+        </dl>
+
+    </div>
+</div>
+</body>
+</html>
