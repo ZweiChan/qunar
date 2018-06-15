@@ -31,7 +31,7 @@ $(function () {
                             +'<dd class="dd3"><a href="#">点击购票</a></dd>');
                         dbody.append(dl);
                     });
-                    $('#dbody').replaceWith(dbody);
+                    dbody.replaceWith(dbody);
                 },
                 error:function(err){
                     alert("error:"+err);

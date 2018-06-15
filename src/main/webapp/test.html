@@ -1,39 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-
-
-
     <title>Title</title>
 </head>
+<body>
+    <form novalidate="novalidate">
+        <h3>Searching for a Flight</h3>
+        <div>
+            <div class="form-group">
+                <label for="from" class="form-label">From</label>
+                <input id="from" type="text" name="departure" data-constraints="@Required"><span
+                class="form-validation"></span>
+            </div>
+            <br/>
+            <div class="form-group">
+                <label for="to" class="form-label">To</label>
+                <input id="to" type="text" name="arrival" data-constraints="@Required"><span
+                class="form-validation"></span>
+            </div>
+            <br/>
+            <div class="form-group date">
+                <label for="datetimepicker" class="form-label rd-input-label">Depart</label>
+                <input id="datetimepicker" type="text" name="date" placeholder="XX年/XX月/XX日"><span></span>
+            </div>
+            <br/>
+            <div style="max-width: 366px;">
+                <button id="submit" data-text="search"
+                        style="max-width: 366px;">search
+                </button>
+            </div>
+            <div id="hint"></div>
+        </div>
+    </form>
+    <br/><br/>
+
+    <table border="1" id="ticket-table" hidden>
+        <tr>
+            <th class="ticket-id">ID</th>
+            <th class="ticket-date">日期</th>
+            <th class="ticket-price">价格</th>
+            <th class="buy-button">购买</th>
+        </tr>
+    </table>
+</body>
 <script>
-    $(function () {
-        var id='123455';
+    $("#submit").click(function (event) {
+        event.preventDefault(); //阻止默认事件
+
+        $('table').show();
+
+        var formData = $("form").serializeArray();  //将页面表单序列化成一个JSON结构的对象
+
         $.ajax({
             url: 'http://localhost:8080/getTicketInfo',
             type: 'POST',
-            data:{startAddress:"上海", endAddress:"北京", date:"20180620"},
-            timeout:5000,
+            data: {
+                startAddress: formData[0].value,
+                endAddress: formData[1].value,
+                date: formData[2].value
+            },
+            timeout: 5000,
             dataType: 'json',
-            success: succFunction //成功执行方法
+            success: function (data) {  //成功执行方法
+                $('.ticket-info').remove(); //删除上一次的搜索结果
+                console.log(data);
+                $.each(data, function (n, info) {
+                    $('#ticket-table').append('<tr class="ticket-info">' +
+                        '<td class="ticket-id">' + info.id + '</td>' +
+                        '<td class="ticket-date">' + info.date + '</td>' +
+                        '<td class="ticket-price">' + info.price + '</td>' +
+                        '<td class="buy-button"><button>购买</button>' +
+                        '</tr>>')
+
+                    // document.write(info.id + "," + info.date + "," + info.price + "<br>");
+                })
+            }
         });
-        function succFunction(data) {
-            var json = eval(data); //数组
-            document.write(json[0].id +","+ json[0].date+","+json[0].price+"<br>");
-        }
     });
 </script>
-<body>
-<div class="list" id="dbody">
-    <dl>
-        <dt><span></span></dt>
-        <dd class="dd0"></a></dd>
-        <dd class="dd1"></dd>
-        <dd class="dd2"><a href="#" style="display:none;">点击订票</a></dd>
-    </dl>
+<!--<body>-->
+<!--<div class="list" id="dbody">-->
+<!--<dl>-->
+<!--<dt><span></span></dt>-->
+<!--<dd class="dd0"></dd>-->
+<!--<dd class="dd1"></dd>-->
+<!--<dd class="dd2"><a href="#" style="display:none;">点击订票</a></dd>-->
+<!--</dl>-->
 
-</div>
-</body>
+<!--</div>-->
+<!--</body>-->
 </html>
