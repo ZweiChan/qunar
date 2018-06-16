@@ -41,9 +41,9 @@ public class BookingServlet extends HttpServlet {
         Order order=agent1Service.booking(user,ticket);
         if (order!=null){
             request.getSession().setAttribute("order",order);
-            request.getRequestDispatcher("/order.html").forward(request,response);
+            response.getWriter().write("1");
         }else {
-            request.getRequestDispatcher("/main.html").forward(request,response);
+            response.getWriter().write("0");
         }
     }
 
