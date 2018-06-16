@@ -38,8 +38,12 @@
 
     <table border="1" id="ticket-table" hidden>
         <tr>
-            <th class="ticket-id">ID</th>
             <th class="ticket-date">日期</th>
+            <th class="ticket-departure">出发地</th>
+            <th class="ticket-arrival">目的地</th>
+            <th class="ticket-dpt-time">出发时间</th>
+            <th class="ticket-arv-time">抵达时间</th>
+            <th class="ticket-company">公司</th>
             <th class="ticket-price">价格</th>
             <th class="buy-button">购买</th>
         </tr>
@@ -49,7 +53,7 @@
     $("#submit").click(function (event) {
         event.preventDefault(); //阻止默认事件
 
-        $('table').show();
+        $('table').show();  //显示机票列表
 
         var formData = $("form").serializeArray();  //将页面表单序列化成一个JSON结构的对象
 
@@ -67,28 +71,35 @@
                 $('.ticket-info').remove(); //删除上一次的搜索结果
                 console.log(data);
                 $.each(data, function (n, info) {
-                    $('#ticket-table').append('<tr class="ticket-info">' +
-                        '<td class="ticket-id">' + info.id + '</td>' +
+                    $('#ticket-table').append("<tr class=\"ticket-info\">" +
                         '<td class="ticket-date">' + info.date + '</td>' +
+                        '<td class="ticket-departure">' + info.startAddress + '</td>' +
+                        '<td class="ticket-arrival">' + info.endAddress + '</td>' +
+                        '<td class="ticket-dpt-time">' + info.startTime + '</td>' +
+                        '<td class="ticket-arv-time">' + info.endTime + '</td>' +
+                        '<td class="ticket-company">' + info.company + '</td>' +
                         '<td class="ticket-price">' + info.price + '</td>' +
-                        '<td class="buy-button"><button>购买</button>' +
-                        '</tr>>')
+                        '<td class="buy-button" id="buy-ticket-no-' + info.id + '"><button>购买</button>' +
+                        '</tr>');
+                    $('#buy-ticket-no-' + info.id).on("click", "button", info, function (event) {
+                        event.preventDefault();
 
-                    // document.write(info.id + "," + info.date + "," + info.price + "<br>");
+                        $.ajax({
+                            url: 'http://localhost:8080/booking',
+                            type: 'POST',
+                            data: {ticketId: info.id},
+                            timeout: 3000,
+                            success: function (data) {
+                                alert("success");
+                                if (data)
+                                    window.location.href = "http://localhost:8080/order.html";
+                                else alert("fail");
+                            }
+                        })
+                    })
                 })
             }
         });
     });
 </script>
-<!--<body>-->
-<!--<div class="list" id="dbody">-->
-<!--<dl>-->
-<!--<dt><span></span></dt>-->
-<!--<dd class="dd0"></dd>-->
-<!--<dd class="dd1"></dd>-->
-<!--<dd class="dd2"><a href="#" style="display:none;">点击订票</a></dd>-->
-<!--</dl>-->
-
-<!--</div>-->
-<!--</body>-->
 </html>
